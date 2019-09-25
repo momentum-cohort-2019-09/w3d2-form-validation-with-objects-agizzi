@@ -45,4 +45,46 @@ class Field {
 		const value = input.value;
 		return value;
 	}
+
+	// validate function takes no arguments - only returns true/false
+
+	validate() {
+		const value = this.getValue();
+
+		// for each validation, validate that value.
+		const errorMsgs = [];
+		for (let validation of this.validations) {
+			if (!validation.validate(value)) {
+				errorMsgs.push(validation.errorMsg);
+			}
+		}
+
+		if (errorMsgs.length === 0) {
+			this.markValid();
+		} else {
+			this.markInvalid();
+			this.addErrorMsgs(errorMsgs);
+		}
+		return errorMsgs.length === 0;
+	}
+}
+
+// Represents form, filled with fields
+class Form {
+	contstructor(domNode = domNode) {
+		this.domNode = domNode;
+		this.fields = fields;
+	}
+
+	validate() {
+		let valid = true;
+
+		for (let field of fields) {
+			const fieldIsValid = field.validate();
+			if (!fieldIsValid) {
+				valid = false;
+			}
+		}
+		return valid;
+	}
 }
