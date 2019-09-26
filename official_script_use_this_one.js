@@ -9,12 +9,14 @@ function queryAll(selector) {
 }
 
 function markValid(field) {
+	// query('#parking-form').addEventListener('submit', function() {
 	clearErrorMsgs(field);
 	field.parentNode.classList.remove('input-invalid');
 	field.parentNode.classList.add('input-valid');
 }
 
 function markInvalid(field, errorMsg) {
+	// query('#parking-form').addEventListener('submit', function() {
 	const fieldContainer = field.parentNode;
 	clearErrorMsgs(field);
 	fieldContainer.classList.remove('input-valid');
@@ -283,8 +285,7 @@ let form = new Form(query('#parking-form'), [
 
 query('#parking-form').addEventListener('submit', function() {
 	if (!form.validate()) {
-		// sumOfDays((query('#start-date').value, query('#days')));
-
-		sumOfDays(query('#start-date').value, query('#days'));
+		// ----- THIS SUM OF DAYS FUNCTION BREAKS MY ERROR MESSAGES 1) THEY ONLY SHOW UP ON 2ND CLICK OF BLANK FORM 2) CAR ERROR MESSAGES ARE GONE
+		// sumOfDays(query('#start-date').value, query('#days').value);
 	}
 });
