@@ -208,22 +208,6 @@ function validateExpirationField(expirationText) {
 	});
 }
 
-function calculateTotalPrice() {
-	query('#parking-form').addEventListener('submit', function() {
-		event.preventDefault();
-		let daysTextField = query('#days');
-		// let totalField = query('#total');
-		let dateTextField = query('#start-date');
-		let dateText = dateTextField.value;
-
-		if (validityPoints === 9) {
-			total = sumOfDays(dateText, daysTextField);
-		} else {
-			console.log(validityPoints);
-		}
-	});
-}
-
 //  Create Object with key value pairs of ID and associated function
 
 let fieldWithFunction = {
@@ -243,9 +227,24 @@ class Field {
 	}
 }
 
-// class Form {
-//     constructor()
-// }
+class Form {
+	contstructor(domNode, fields) {
+		this.domNode = domNode;
+		this.fields = fields;
+	}
+
+	validate() {
+		let valid = true;
+
+		for (let field of fields) {
+			const fieldIsValid = field.validate();
+			if (!fieldIsValid) {
+				valid = false;
+			}
+		}
+		return valid;
+	}
+}
 
 function createValidateField(id) {
 	let newField = new Field(id, fieldWithFunction[id]);
@@ -268,8 +267,17 @@ createValidateField('#cvv-field');
 
 createValidateField('#expiration-field');
 
-console.log(validityPoints);
+let form = new Form(query('#parking-form'), [
+	'#name-field',
+	'#start-date',
+	'#days-field',
+	'#credit-card-field',
+	'#cvv-field',
+	'#expiration-field'
+]);
 
-// class Form {
-//     constructor{}
-//
+query('#parking-form').addEventListener('submit', function() {
+	if (form.validate()) {
+		sumOfDays();
+	}
+});

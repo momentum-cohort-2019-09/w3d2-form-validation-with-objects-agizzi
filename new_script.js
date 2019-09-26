@@ -88,3 +88,20 @@ class Form {
 		return valid;
 	}
 }
+
+// create validations
+
+const presenceValidation = new validation((value) => !!value, 'must not be blank');
+const isDateTodayorLater = new validation(function(date) {
+	let now = new Date();
+	let userDate = new Date(date);
+	return userDate <= now;
+});
+
+// create fields
+
+let nameField = new Field(document.querySelector('#name-field'), [ presenceValidation ]);
+
+document.querySelector('#parking-form').addEventListener('submit', function() {
+	event.preventDefault();
+});
