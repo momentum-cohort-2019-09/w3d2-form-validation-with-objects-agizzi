@@ -76,7 +76,7 @@ function sumOfDays(startDay, field) {
 	let sum = 0;
 	let totalField = query('#total');
 	let totalParagraph = document.createElement('p');
-	clearErrorMsgs(totalField);
+	// clearErrorMsgs(totalField);
 	totalParagraph.classList.add('text-success', 'error-message');
 
 	for (let i = 1; i <= amountOfDays; i++) {
@@ -285,7 +285,6 @@ let form = new Form(query('#parking-form'), [
 
 query('#parking-form').addEventListener('submit', function() {
 	if (!form.validate()) {
-		// ----- THIS SUM OF DAYS FUNCTION BREAKS MY ERROR MESSAGES 1) THEY ONLY SHOW UP ON 2ND CLICK OF BLANK FORM 2) CAR ERROR MESSAGES ARE GONE
-		// sumOfDays(query('#start-date').value, query('#days').value);
+		sumOfDays(query('#start-date').value, query('#days'));
 	}
 });
