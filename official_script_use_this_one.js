@@ -20,6 +20,10 @@ function markInvalid(field, errorMsg) {
 	fieldContainer.classList.remove('input-valid');
 	fieldContainer.classList.add('input-invalid');
 
+	if (query('.text-success')) {
+		query('.text-success').remove();
+	}
+
 	if (errorMsg) {
 		const errorParagraph = document.createElement('p');
 		errorParagraph.classList.add('input-hint', 'text-danger', 'error-message');
@@ -112,6 +116,7 @@ function validateCarFields(carBox) {
 			carBox.push(carFields[i].value);
 			if (!carBox[i]) {
 				markInvalid(carFields[i].parentNode, 'Oops! All Fields are required');
+				return;
 			} else if (carBox[0] < 1900 || (carBox[0] > 2020 || isNaN(carBox[0]))) {
 				markInvalid(carFields[i].parentNode, 'Oops! please enter a valid year.');
 			} else {
@@ -228,7 +233,7 @@ class Field {
 }
 
 class Form {
-	contstructor(domNode, fields) {
+	constructor(domNode, fields) {
 		this.domNode = domNode;
 		this.fields = fields;
 	}
@@ -236,8 +241,8 @@ class Form {
 	validate() {
 		let valid = true;
 
-		for (let field of fields) {
-			const fieldIsValid = field.validate();
+		for (let field of this.fields) {
+			const fieldIsValid = fieldWithFunction[field]();
 			if (!fieldIsValid) {
 				valid = false;
 			}
@@ -252,7 +257,7 @@ function createValidateField(id) {
 	return validator;
 }
 
-createValidateField('#name-field');
+const nameField = createValidateField('#name-field');
 console.log(createValidateField('#name-field'));
 
 createValidateField('#car-field');
@@ -277,7 +282,9 @@ let form = new Form(query('#parking-form'), [
 ]);
 
 query('#parking-form').addEventListener('submit', function() {
-	if (form.validate()) {
-		sumOfDays();
+	if (!form.validate()) {
+		// sumOfDays((query('#start-date').value, query('#days')));
+
+		sumOfDays(query('#start-date').value, query('#days'));
 	}
 });
